@@ -25,6 +25,14 @@ format:
 ---
 
 ```{r setup, include=FALSE}
+install.packages("readr")
+library(readr)
+install.packages("dplyr")
+library(dplyr)
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("ggplot2")
+library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
 movies3 <- read_tsv("movies3.tsv")
 ```
@@ -83,7 +91,10 @@ str(movies3)
 
 **Your Answer:**
 
-Write your response here.
+There are nominal variables: "title" is an example.
+There are no ordinal variables.
+There are continuous variables: "budget" is an example.
+there are discrete variables: "release_year" is an example. 
 
 3.  A movie studio wants to know which types of movies give maximal revenue. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
 
@@ -104,7 +115,10 @@ Each week consists of 1, 2, or 3 subquestions. The total amount of points you ca
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+mean(movies3$revenue, na.rm = TRUE)
+median(movies3$revenue, na.rm = TRUE)
+max(movies3$revenue, na.rm = TRUE)
+min(movies3$revenue, na.rm = TRUE)
 
 ```
 
