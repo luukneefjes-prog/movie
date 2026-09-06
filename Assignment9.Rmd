@@ -77,10 +77,7 @@ glimpse(movies3)
 
 **Your Answer:**
 
-Observations: 707
-Variables: 19
-Subjects: 707
-A subject is a movie entry in the dataset, represented by different attributes like, title, budget, revenue, release date, actors and director.
+Observations: 707 Variables: 19 Subjects: 707 A subject is a movie entry in the dataset, represented by different attributes like, title, budget, revenue, release date, actors and director.
 
 2.  Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); continuous; (iv) discrete. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
@@ -91,10 +88,7 @@ str(movies3)
 
 **Your Answer:**
 
-There are nominal variables: "title" is an example.
-There are no ordinal variables.
-There are continuous variables: "budget" is an example.
-there are discrete variables: "release_year" is an example. 
+There are nominal variables: "title" is an example. There are no ordinal variables. There are continuous variables: "budget" is an example. There are discrete variables: "release_year" is an example.
 
 3.  A movie studio wants to know which types of movies give maximal revenue. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
 
@@ -124,19 +118,19 @@ min(movies3$revenue, na.rm = TRUE)
 
 **Your Answer:**
 
-Write your formulated response here.
+The variable revenue has a mean of \$77,271,126, a median of \$17,986,781, a maximum of \$1,153,304,495, and a minimum of \$0.
 
 *Step b*
 
 ```{r}
-
-#WRITE YOUR CODE HERE
+movies3[which.max(movies3$revenue), c("title", "revenue")]
+movies3[which.min(movies3$revenue), c("title", "revenue")]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The movie with the highest revenue is Captain America: Civil war and the revenue is \$1,153,304,495 and one of the movies with the lowest revenue is Chasing Mavericks with a revenue of \$0.
 
 *Step c*
 
