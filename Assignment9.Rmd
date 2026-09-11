@@ -210,13 +210,13 @@ e.  Using the formulas of the *Central Limit Theorem*, give the distribution of 
 *Step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+mean(movies3$vote_average, na.rm = TRUE)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The mean of the variable vote_average is 5.97. 
 
 *Step b*
 
