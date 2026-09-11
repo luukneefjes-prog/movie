@@ -219,14 +219,15 @@ The mean of the variable vote_average is 5.97.
 *Step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+set.seed(123) 
+movies_sample <- movies3[sample(1:nrow(movies3), 25), ]
+mean(movies_sample$vote_average, na.rm = TRUE)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
-
+The mean of the vote_average of this random sample is higher than the average of the whole dataset, that is due to random sampling variability.  
 *Step c*
 
 ```{r}
