@@ -24,14 +24,11 @@ format:
 ---
 
 ```{r setup, include=FALSE}
-install.packages("readr")
 library(readr)
-install.packages("dplyr")
 library(dplyr)
-install.packages("tidyverse")
 library(tidyverse)
-install.packages("ggplot2")
 library(ggplot2)
+library(moments)
 knitr::opts_chunk$set(echo = TRUE)
 movies3 <- read_tsv("movies3.tsv")
 ```
@@ -182,12 +179,19 @@ The mean is now 17.35027. The histogram is left skewed and the most movies hover
 *Step f*
 
 ```{r}
+library(moments)
 
+skewness(movies3$revenue, na.rm = TRUE)
+kurtosis(movies3$revenue, na.rm = TRUE)
+skewness(movies3$log_revenue, na.rm = TRUE)
+kurtosis(movies3$log_revenue, na.rm = TRUE)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The variable revenue has a skewness of 3.55 and a kurtosis of 18.75. In the histogram we see the same movement so these numbers confirm what we can witness in the histogram, a tail to the right.
+
+The variable log_revenue has a skewness of -2.47 and a kurtosis of 14.53. The negative skewness is also noticeable in the histogram. The tail is now on the left and and the distribution is less extreme than with the original values. 
 
 # Week 2
 
@@ -227,7 +231,7 @@ mean(movies_sample$vote_average, na.rm = TRUE)
 
 **Your Answer:**
 
-The mean of the vote_average of this random sample is higher than the average of the whole dataset, that is due to random sampling variability.  
+The mean of the variable vote_average of this random sample is higher than the average of the whole dataset, that is due to random sampling variability.  
 *Step c*
 
 ```{r}
