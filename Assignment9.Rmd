@@ -197,7 +197,7 @@ Write your formulated response here.
 
 *Your answer here:*
 
-Write your formulated response here.
+It is a sample of a larger population, because it is not every movie that has ever been made. If it was the full population than it would have been every movie ever. 
 
 2 For this question, you will assume that your data set is the full population.
 
