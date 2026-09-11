@@ -183,8 +183,7 @@ The mean is now 17.35027. The histogram is left skewed and the most movies hover
 *Step f*
 
 ```{r}
-
-
+hhhjhjh
 ```
 
 **Your Answer:**
