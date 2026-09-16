@@ -351,7 +351,7 @@ The p-value is much lower than the chosen significance level of 0.05, so the nul
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+#WR
 
 ```
 
