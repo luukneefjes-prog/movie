@@ -298,14 +298,21 @@ For the next part of the assignment, assume that the movies in your data frame a
 1.  Give a 90 percent confidence interval for the variable *revenue*. Interpret the result. \textbf{[2 points]}
 
 ```{r}
-#WRITE YOUR CODE HERE
-
+revenue_data <- movies3$revenue[!is.na(movies3$revenue)]
+n <- length(revenue_data)
+mean_rev <- mean(revenue_data)
+se_rev <- sd(revenue_data) / sqrt(n)
+ci_90 <- mean_rev + c(-1,1) * qt(0.95, df = n -1) * se_rev
+ci_90
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+lower bound: $68 million
+upper bound: $86.5 million
+
+There is a 90% confidence rate that the true average revenue for movies in the broader population falls between \$68 million and \$86.5 million
 
 2
 
@@ -317,24 +324,29 @@ d.  Assume that the variance of revenue for movies with a male director in your 
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+table(movies_sample$director_gender)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+in the sample, there is 1 movie directed by a female director and 20 by a male director.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+binom.test(1, 21, p = 0.5)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+null hypothesis: the probability that a movie is directed by a male or female director is equal
+alternative hypothesis: the probability that a movie is directed by a male or female director is not equal. 
+chosen significance level: 0.05
+P-value: 2.098e-05
+
+The p-value is much lower than the chosen significance level of 0.05, so the null hypothesis is rejected. The probability of a movie being directed by a male or female director is not equal to 0.5.
 
 *step c*
 
