@@ -9,7 +9,10 @@ output:
   html_document:
     df_print: paged
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
 =======
 >>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
 header-includes:
@@ -239,6 +242,7 @@ The mean of the variable vote_average of this random sample is higher than the a
 
 ```{r}
 <<<<<<< HEAD
+<<<<<<< HEAD
 sample_means <- vector(length = 100)
 for (i in 1:100) {
   s <- movies3[sample(nrow(movies3), 25, na.rm = true),]
@@ -249,12 +253,17 @@ head(sample_means)
 
 
 =======
+=======
+>>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
 sample_means <- numeric(100)
 for (x in 1:100) {
   sample_1 <- movies3[sample(nrow(movies3), 25), ]
   sample_means[x] <- mean(sample_1$vote_average, na.rm = TRUE)
 }
 print(head(sample_means))
+<<<<<<< HEAD
+>>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
+=======
 >>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
 
 ```
