@@ -8,7 +8,10 @@ output:
     number_sections: true
   html_document:
     df_print: paged
-122
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
 header-includes:
 - "\\setcounter{section}{-1}"
 - |
@@ -25,14 +28,11 @@ format:
 ---
 
 ```{r setup, include=FALSE}
-install.packages("readr")
 library(readr)
-install.packages("dplyr")
 library(dplyr)
-install.packages("tidyverse")
 library(tidyverse)
-install.packages("ggplot2")
 library(ggplot2)
+library(moments)
 knitr::opts_chunk$set(echo = TRUE)
 movies3 <- read_tsv("movies3.tsv")
 ```
@@ -183,12 +183,19 @@ The mean is now 17.35027. The histogram is left skewed and the most movies hover
 *Step f*
 
 ```{r}
-hhhjhjh
+library(moments)
+
+skewness(movies3$revenue, na.rm = TRUE)
+kurtosis(movies3$revenue, na.rm = TRUE)
+skewness(movies3$log_revenue, na.rm = TRUE)
+kurtosis(movies3$log_revenue, na.rm = TRUE)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The variable revenue has a skewness of 3.55 and a kurtosis of 18.75. In the histogram we see the same movement so these numbers confirm what we can witness in the histogram, a tail to the right.
+
+The variable log_revenue has a skewness of -2.47 and a kurtosis of 14.53. The negative skewness is also noticeable in the histogram. The tail is now on the left and and the distribution is less extreme than with the original values.
 
 # Week 2
 
@@ -196,7 +203,7 @@ Write your formulated response here.
 
 *Your answer here:*
 
-It is a sample of a larger population, because it is not every movie that has ever been made. If it was the full population than it would have been every movie ever. 
+It is a sample of a larger population, because it is not every movie that has ever been made. If it was the full population than it would have been every movie ever.
 
 2 For this question, you will assume that your data set is the full population.
 
@@ -215,61 +222,90 @@ mean(movies3$vote_average, na.rm = TRUE)
 
 **Your Answer:**
 
-The mean of the variable vote_average is 5.97. 
+The mean of the variable vote_average is 5.97.
 
 *Step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+set.seed(123) 
+movies_sample <- movies3[sample(1:nrow(movies3), 25), ]
+mean(movies_sample$vote_average, na.rm = TRUE)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
-
-*Step c*
+The mean of the variable vote_average of this random sample is higher than the average of the whole dataset, that is due to random sampling variability. *Step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+<<<<<<< HEAD
+sample_means <- vector(length = 100)
+for (i in 1:100) {
+  s <- movies3[sample(nrow(movies3), 25, na.rm = true),]
+  sample_means[i] <- means (s$vote_average)
+}
+head(sample_means)
+
+
+
+=======
+sample_means <- numeric(100)
+for (x in 1:100) {
+  sample_1 <- movies3[sample(nrow(movies3), 25), ]
+  sample_means[x] <- mean(sample_1$vote_average, na.rm = TRUE)
+}
+print(head(sample_means))
+>>>>>>> 2eb90d43fb885fbec807e886fd456c824fe2ff24
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Because it is a random sample, we cannot write down the first numbers as an answer because they are different every time the code is ran.
 
 *Step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+summary(sample_means)
+sd(sample_means)
+hist(sample_means,
+     main = "Histogram sample means",
+     xlab = "sample mean vote average")
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+mean: 5.995 standard deviation: 0.2495455 shape: normal and bell-shaped, with a higher frequency in the center.
 
 *Step e*
 
 **Your Answer:**
 
-Write your formulated response here.
+distribution: pretty normal, according to central limit theorem expected value: same as the population mean of vote_average (5.97) standard deviation: population standard deviation divided by the square root of 25 (0.2317644)
+
+The expected value and standard deviation calculated are very close to the empirical mean and standard deviation. So the central limit theorem is useful.
 
 3.  Is there a variable in your data set which you would expect to follow a discrete uniform distribution? Explain, without looking at the data, why you expect this data to be discrete uniform. If the data would indeed follow a discrete uniform distribution, what would you expect the mean and standard deviation of this variable to be? Next, plot a histogram of the variable, and plot an appropriate discrete uniform distribution on top of this histogram. Comment whether the variable indeed follows this expected distribution. If the distribution deviates from the discrete uniform distribution, explain why this is the case. \textbf{[6 points]}
 
 **Your Answer:**
 
-Write your formulated response here.
+Without looking at the data, i think the variable "release_month" follows a discrete uniform distribution because there are 12 months in a year and movies are released throughout the whole year and any month should be equal. The expected mean should be: 1+12/2 = 6.5 and the expected standard deviation should be sqrt(((12-1+1)\^2-1)/12) = 3.45
 
 ```{r}
-#WRITE YOUR CODE HERE
+hist(movies3$release_month, probability = TRUE, 
+     main = "histogram release month", 
+     xlab = "release Month", 
+     col = "lightblue")
 
+abline(h = 1/12, 
+       col = "red", 
+       lwd = 2)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The distribution deviates from the discrete uniform distribution. That is because movies are not released evenly throughout the year, but movie companies choose when to release the movie for a higher profit.
 
 # Week 3
 
@@ -278,14 +314,20 @@ For the next part of the assignment, assume that the movies in your data frame a
 1.  Give a 90 percent confidence interval for the variable *revenue*. Interpret the result. \textbf{[2 points]}
 
 ```{r}
-#WRITE YOUR CODE HERE
-
+revenue_data <- movies3$revenue[!is.na(movies3$revenue)]
+n <- length(revenue_data)
+mean_rev <- mean(revenue_data)
+se_rev <- sd(revenue_data) / sqrt(n)
+ci_90 <- mean_rev + c(-1,1) * qt(0.95, df = n -1) * se_rev
+ci_90
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+lower bound: \$68 million upper bound: \$86.5 million
+
+There is a 90% confidence rate that the true average revenue for movies in the broader population falls between \$68 million and \$86.5 million
 
 2
 
@@ -297,46 +339,56 @@ d.  Assume that the variance of revenue for movies with a male director in your 
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+table(movies_sample$director_gender)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+in the sample, there is 1 movie directed by a female director and 20 by a male director.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+binom.test(1, 21, p = 0.5)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+null hypothesis: the probability that a movie is directed by a male or female director is equal alternative hypothesis: the probability that a movie is directed by a male or female director is not equal. chosen significance level: 0.05 P-value: 2.098e-05
+
+The p-value is much lower than the chosen significance level of 0.05, so the null hypothesis is rejected. The probability of a movie being directed by a male or female director is not equal to 0.5.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies_sample$revenue_mil <- movies_sample$revenue / 1000000
+tapply(movies_sample$revenue_mil, movies_sample$director_gender, var, na.rm = TRUE)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+the variance for male directors: /\$49,159.36 the variance for female directors: not available, there is only one female director so it is impossible to calculate the variance.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+n_female <- sum(movies_sample$director_gender == "female", na.rm = TRUE)
+df <- n_female - 1
 
+test_statistic <- NA
+p_value <- NA
+
+print(df)
+print(test_statistic)
+print(p_value)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The null hypothesis is that the variance of revenue for female directors equals the variance for male directors ($\sigma^2_{\text{female}} = \sigma^2_{\text{male}}$), and the alternative hypothesis is that they are not equal ($\sigma^2_{\text{female}} \neq \sigma^2_{\text{male}}$), tested at a significance level of $\alpha = 0.05$. The test statistic follows a Chi-Square distribution with $n - 1$ degrees of freedom. However, because there is only $n = 1$ female-directed movie in the sample, the degrees of freedom equal zero, making the sample variance, test statistic, and p-value undefined (`NA`). Therefore, we fail to reject the null hypothesis due to insufficient data.
 
 3
 
@@ -347,31 +399,54 @@ c.  If you look closely at the resulting plot in b.), you will probably see that
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+yearly_revenue <- aggregate(revenue_mil ~ release_year, data = movies_sample, FUN = mean)
 
+plot(yearly_revenue$release_year, yearly_revenue$revenue_mil,
+     xlab = "year",
+     ylab = "mean revenue",
+     main = "mean revenue by rear",
+     pch = 19, col = "red")
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Revenue of movies is fluctuating from year to year. it is not increasing or decreasing over time but remains overall relatively stable. 
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+stats <- aggregate(revenue_mil ~ release_year, data = movies_sample, function(x) {
+  m <- mean(x)
+  se <- sd(x) / sqrt(length(x))
+  c(mean = m, lower = m - 1.96 * se, upper = m + 1.96 * se)
+})
+
+plot_data <- data.frame(year = stats$release_year, stats$revenue_mil)
+
+ggplot(plot_data, aes(x = year, y = mean)) +
+  geom_point(color = "red", size = 2) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2, color = "blue") +
+  labs(title = "mean revenue with 95% confidence intervals",
+       x = "year",
+       y = "mean revenue") +
+  theme_minimal()
+```
+
+**Your Answer:**
+
+done.
+
+*step c*
+
+```{r}
+table(movies_sample$release_year)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The reason that it can be wide is due to smaller sample sizes, they have a higher uncertainty. The years with very few movies will have much larger confidence intervals. You can verify this with the data. 
 
-*step c*
-
-```{r}
-#WRITE YOUR CODE HERE
-
-```
 
 # Week 4
 
