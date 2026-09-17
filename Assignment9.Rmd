@@ -289,7 +289,7 @@ abline(h = 1/12,
 
 **Your Answer:**
 
-The distribution deviates from the discrete uniform distribution. That is because movies are not released evenly throughout the year, but movie companies choose when to release the movie for a higher profit. 
+The distribution deviates from the discrete uniform distribution. That is because movies are not released evenly throughout the year, but movie companies choose when to release the movie for a higher profit.
 
 # Week 3
 
@@ -309,8 +309,7 @@ ci_90
 
 **Your Answer:**
 
-lower bound: $68 million
-upper bound: $86.5 million
+lower bound: \$68 million upper bound: \$86.5 million
 
 There is a 90% confidence rate that the true average revenue for movies in the broader population falls between \$68 million and \$86.5 million
 
@@ -341,34 +340,39 @@ binom.test(1, 21, p = 0.5)
 
 **Your Answer:**
 
-null hypothesis: the probability that a movie is directed by a male or female director is equal
-alternative hypothesis: the probability that a movie is directed by a male or female director is not equal. 
-chosen significance level: 0.05
-P-value: 2.098e-05
+null hypothesis: the probability that a movie is directed by a male or female director is equal alternative hypothesis: the probability that a movie is directed by a male or female director is not equal. chosen significance level: 0.05 P-value: 2.098e-05
 
 The p-value is much lower than the chosen significance level of 0.05, so the null hypothesis is rejected. The probability of a movie being directed by a male or female director is not equal to 0.5.
 
 *step c*
 
 ```{r}
-#WR
+movies_sample$revenue_mil <- movies_sample$revenue / 1000000
+tapply(movies_sample$revenue_mil, movies_sample$director_gender, var, na.rm = TRUE)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+the variance for male directors: /\$49,159.36 the variance for female directors: not available, there is only one female director so it is impossible to calculate the variance.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+n_female <- sum(movies_sample$director_gender == "female", na.rm = TRUE)
+df <- n_female - 1
 
+test_statistic <- NA
+p_value <- NA
+
+print(df)
+print(test_statistic)
+print(p_value)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The null hypothesis is that the variance of revenue for female directors equals the variance for male directors ($\sigma^2_{\text{female}} = \sigma^2_{\text{male}}$), and the alternative hypothesis is that they are not equal ($\sigma^2_{\text{female}} \neq \sigma^2_{\text{male}}$), tested at a significance level of $\alpha = 0.05$. The test statistic follows a Chi-Square distribution with $n - 1$ degrees of freedom. However, because there is only $n = 1$ female-directed movie in the sample, the degrees of freedom equal zero, making the sample variance, test statistic, and p-value undefined (`NA`). Therefore, we fail to reject the null hypothesis due to insufficient data.
 
 3
 
@@ -379,31 +383,54 @@ c.  If you look closely at the resulting plot in b.), you will probably see that
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+yearly_revenue <- aggregate(revenue_mil ~ release_year, data = movies_sample, FUN = mean)
 
+plot(yearly_revenue$release_year, yearly_revenue$revenue_mil,
+     xlab = "year",
+     ylab = "mean revenue",
+     main = "mean revenue by rear",
+     pch = 19, col = "red")
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Revenue of movies is fluctuating from year to year. it is not increasing or decreasing over time but remains overall relatively stable. 
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+stats <- aggregate(revenue_mil ~ release_year, data = movies_sample, function(x) {
+  m <- mean(x)
+  se <- sd(x) / sqrt(length(x))
+  c(mean = m, lower = m - 1.96 * se, upper = m + 1.96 * se)
+})
+
+plot_data <- data.frame(year = stats$release_year, stats$revenue_mil)
+
+ggplot(plot_data, aes(x = year, y = mean)) +
+  geom_point(color = "red", size = 2) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2, color = "blue") +
+  labs(title = "mean revenue with 95% confidence intervals",
+       x = "year",
+       y = "mean revenue") +
+  theme_minimal()
+```
+
+**Your Answer:**
+
+done.
+
+*step c*
+
+```{r}
+table(movies_sample$release_year)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The reason that it can be wide is due to smaller sample sizes, they have a higher uncertainty. The years with very few movies will have much larger confidence intervals. You can verify this with the data. 
 
-*step c*
-
-```{r}
-#WRITE YOUR CODE HERE
-
-```
 
 # Week 4
 
