@@ -449,7 +449,7 @@ g.  Who do you think is correct? Bob or Chantal? What would you advise the movie
 *step a*
 
 ```{r}
-model_level <- lm(revenue ~ budget, data = movies)
+model_level <- lm(revenue ~ budget, data = movies3.tsv)
 summary(model_level)
 
 ```
