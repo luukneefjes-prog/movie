@@ -449,18 +449,28 @@ g.  Who do you think is correct? Bob or Chantal? What would you advise the movie
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+model_level <- lm(revenue ~ budget, data = movies)
+summary(model_level)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Coefficients:
+              Estimate  Std. Error  t value  Pr(>|t|)
+(Intercept) -681,878    4,824,600   -0.141    0.888
+budget          2.576      0.0937   27.50    <2e-16 ***
+
+Residual standard error: 1.038e+08 on 705 degrees of freedom
+Multiple R-squared:  0.5175,   Adjusted R-squared:  0.5168
+F-statistic: 756.1 on 1 and 705 DF,  p-value: < 2.2e-16
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+# Extract beta1 (the coefficient on budget)
+beta1 <- coef(model_level)["budget"]
+beta1
 
 ```
 
