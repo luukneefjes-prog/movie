@@ -394,7 +394,7 @@ plot(yearly_revenue$release_year, yearly_revenue$revenue_mil,
 
 **Your Answer:**
 
-Revenue of movies is fluctuating from year to year. it is not increasing or decreasing over time but remains overall relatively stable. 
+Revenue of movies is fluctuating from year to year. it is not increasing or decreasing over time but remains overall relatively stable.
 
 *step b*
 
@@ -429,8 +429,7 @@ table(movies_sample$release_year)
 
 **Your Answer:**
 
-The reason that it can be wide is due to smaller sample sizes, they have a higher uncertainty. The years with very few movies will have much larger confidence intervals. You can verify this with the data. 
-
+The reason that it can be wide is due to smaller sample sizes, they have a higher uncertainty. The years with very few movies will have much larger confidence intervals. You can verify this with the data.
 
 # Week 4
 
@@ -456,14 +455,9 @@ summary(model_level)
 
 **Your Answer:**
 
-Coefficients:
-              Estimate  Std. Error  t value  Pr(>|t|)
-(Intercept) -681,878    4,824,600   -0.141    0.888
-budget          2.576      0.0937   27.50    <2e-16 ***
+Coefficients: Estimate Std. Error t value Pr(\>\|t\|) (Intercept) -681,878 4,824,600 -0.141 0.888 budget 2.576 0.0937 27.50 \<2e-16 \*\*\*
 
-Residual standard error: 1.038e+08 on 705 degrees of freedom
-Multiple R-squared:  0.5175,   Adjusted R-squared:  0.5168
-F-statistic: 756.1 on 1 and 705 DF,  p-value: < 2.2e-16
+Residual standard error: 1.038e+08 on 705 degrees of freedom Multiple R-squared: 0.5175, Adjusted R-squared: 0.5168 F-statistic: 756.1 on 1 and 705 DF, p-value: \< 2.2e-16
 
 *step b*
 
