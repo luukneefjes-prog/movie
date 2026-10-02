@@ -26,7 +26,6 @@ format:
 ```{r setup, include=FALSE}
 library(readr)
 library(dplyr)
-library(tidyverse)
 library(ggplot2)
 library(moments)
 knitr::opts_chunk$set(echo = TRUE)
@@ -455,66 +454,79 @@ summary(model_level)
 
 **Your Answer:**
 
-Coefficients: Estimate Std. Error t value Pr(\>\|t\|) (Intercept) -681,878 4,824,600 -0.141 0.888 budget 2.576 0.0937 27.50 \<2e-16 \*\*\*
-
-Residual standard error: 1.038e+08 on 705 degrees of freedom Multiple R-squared: 0.5175, Adjusted R-squared: 0.5168 F-statistic: 756.1 on 1 and 705 DF, p-value: \< 2.2e-16
+-\> see printed summary
 
 *step b*
 
 ```{r}
-# Extract beta1 (the coefficient on budget)
-beta1 <- coef(model_level)["budget"]
-beta1
+coef(model_level)["budget"]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The estimated value of $\beta_1$ is around 2.58, that means that for every dollar extra towards the production budget, the expected revenue rises with \$2.58 dollars. The coefficient is larger than 1, so every extra dollar spend is being compensated with higher revenue.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+b1 <- summary(model_level)$coefficients["budget", "Estimate"]
+se1 <- summary(model_level)$coefficients["budget", "Std. Error"]
+df_res <- df.residual(model_level)
 
+t_stat <- (b1 - 1) / se1
+p_val <- 1 - pt(t_stat, df = df_res)
+
+print(t_stat)
+print(p_val)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The t-statistic of 16.8251 gives a p_value of 0, which means that the null hypothesis has successfully been rejected.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies3$log_revenue <- log(movies3$revenue)
+movies3$log_budget <- log(movies3$budget)
+
+movies3$log_revenue[is.infinite(movies3$log_revenue)] <- NA
+movies3$log_revenue[is.infinite(movies3$log_budget)] <- NA
+
+model_log <- lm(log_revenue ~ log_budget, data = movies3, na.action = na.exclude)
+summary(model_log)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+-\> see printed summary
 
 *step e*
 
 ```{r}
-#WRITE YOUR CODE HERE
+coef(model_log)["log_budget"]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The coefficient is 0.7915. This is elastic, when the production budget goes up with 1% the revenue is expected to go up with 0.79%.
 
 *step f*
 
 ```{r}
-#WRITE YOUR CODE HERE
+summary(model_level)$r.squared
+summary(model_log)$r.squared
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The R\^2 of the level-level model is 51.75% The R\^2 of the log-log model is 41.52%
+
+So the level-level model has a better fit, because it has a higher R\^2. It explains more of the variation in the original revenue values.
 
 *step g*
 
@@ -525,7 +537,7 @@ Write your formulated response here.
 
 **Your Answer:**
 
-Write your formulated response here.
+From the data we collected, you could say that Chantal is right. For every extra dollar spend on production there is a positive impact on the Revenue. But the log-log model shows that the elasticity is around 0.79, this means that the bigger revenues will eventually slow down as the production budgets become bigger and bigger. The studio should focus on raising the production budgets as long as the marginal revenue is higher than the marginal costs, and keep in mind that returns will eventually slow down for the big production movies. 
 
 2
 
@@ -535,24 +547,37 @@ b.  Using the insights from the scatterplot, your linear model, and your data, f
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+ggplot(movies3, aes(x = log_budget, y = log_revenue)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", col = "blue", se = FALSE) +
+  labs(
+    title = "Scatterplot log revenue and log budget",
+    x = "Log Budget",
+    y = "Log Revenue"
+  ) +
+  theme_minimal()
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+see scatterplot
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
 
+movies3$predicted_log_rev <- predict(model_log)
+movies3$residuals <- residuals(model_log)
+
+overperformer <- movies3[which.max(movies3$residuals), ]
+
+overperformer[, c("title", "log_revenue", "predicted_log_rev", "residuals")]
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The movie is: Nurse 3-D, its log of revenue is 16.1181, its predicted log of revenue is 5.926207, and its residual is 10.19189
 
 # Week 5
 
@@ -569,35 +594,46 @@ f.  One executive at the studio wants to time the release of the movie to a spec
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+sort(table(movies3$genre), decreasing = TRUE)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The three genres that occur the most are: Drama (332x), Comedy(176x), Thriller(97x)
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies3$genre2 <- as.character(movies3$genre)
+
+movies3$genre2[!(movies3$genre2 %in% c("Drama", "Comedy", "Thriller"))] <- "Other"
+movies3$genre2 <- as.factor(movies3$genre2)
+sort(table(movies3$genre2), decreasing = TRUE)
+
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+See frequency table
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
-
+model_week5 <- lm(log_revenue ~ log_budget + genre2 + release_year, data = movies3, na.action = na.exclude)
+summary(model_week5)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+interpretation of each coefficient:
+-(Intercept)(19.73): This is the estimated intercept. It represents the expected log-revenue when the log-budget is 0, for the genre comedy and in the year 0. 
+-log_budget(0.7769, p<0.001): This is a log-log relationship, so we interpret it as an elasticity. A 1% increase in the production budget leads to an expected increase in revenue of 0.78$, controlling for genre and release year.
+-genre2Drama(-0.4371, p = 0.0184): This is a dummy variable relative to the reference category (which is comedy). Drama movies have significantly lower revenue than comedy films. (0.4371 log units lower)
+-genre2Other(0.0914, p = 0.70): The difference in revenue between other cat and the reference category (comedy) is not significant because the p-level is >0.05
+-genre2Thriller(0.0549, p = 0.81): Also the difference between thriller and comedy is not significant. Because the p-level >0.05
+-release_year(-0.0076, p = 0.48): The release year has a slightly negative coefficient, but it is not statistically significant(p > 0.05). This means that there is no proof that release year has a linear effect on revenue in this model. 
 
 *step d*
 
